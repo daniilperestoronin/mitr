@@ -595,8 +595,12 @@ static MitrConfig *parse_yaml_file(const char *path) {
             copy_cstr(section_stack[depth], sizeof(section_stack[depth]),
                       pending_key);
           } else {
-            snprintf(section_stack[depth], sizeof(section_stack[depth]),
-                     "%s.%s", section_stack[depth - 1], pending_key);
+            /* Join outside the stack before applying its path length limit. */
+            char section[sizeof(section_stack[0]) * 2];
+            snprintf(section, sizeof(section), "%s.%s",
+                     section_stack[depth - 1], pending_key);
+            copy_cstr(section_stack[depth], sizeof(section_stack[depth]),
+                      section);
           }
           if (!section_is_known(section_stack[depth]) &&
               strcmp(pending_key, "padding") != 0) {
