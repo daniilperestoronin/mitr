@@ -10,14 +10,54 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-24.04, macos-15]
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: make deps DEPS_DEV=1
+        run: make deps
+
+      - name: Select Linux toolchain
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y gcc-13 g++-13 clang-18 clang-tidy-18 libclang-rt-18-dev python3-venv
+          echo "CC=gcc-13" >> "$GITHUB_ENV"
+          echo "CXX=g++-13" >> "$GITHUB_ENV"
+          echo "FUZZ_CC=clang-18" >> "$GITHUB_ENV"
+          echo "CLANG_TIDY=clang-tidy-18" >> "$GITHUB_ENV"
+
+      - name: Select macOS toolchain
+        if: runner.os == 'macOS'
+        run: |
+          export DEVELOPER_DIR=/Applications/Xcode_16.4.app/Contents/Developer
+          xcodebuild -version
+          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
+          echo "CC=$(xcrun --find clang)" >> "$GITHUB_ENV"
+          echo "CXX=$(xcrun --find clang++)" >> "$GITHUB_ENV"
+
+      - name: Install shared formatter
+        run: |
+          python3 -m venv "$RUNNER_TEMP/mitr-format"
+          "$RUNNER_TEMP/mitr-format/bin/python" -m pip install 'clang-format==18.1.8'
+          echo "CLANG_FORMAT=$RUNNER_TEMP/mitr-format/bin/clang-format" >> "$GITHUB_ENV"
+
+      - name: Show tool versions
+        run: |
+          "$CC" --version
+          "$CXX" --version
+          "$CLANG_FORMAT" --version
+          cmake --version
+          autoconf --version
+          automake --version
+          if [ "$RUNNER_OS" = Linux ]; then
+            "$FUZZ_CC" --version
+            "$CLANG_TIDY" --version
+            libtoolize --version
+          else
+            glibtoolize --version
+          fi
 
       - name: Build vendored libraries
         run: make vendor

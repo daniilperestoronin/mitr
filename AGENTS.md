@@ -78,6 +78,14 @@ Ubuntu also runs `make lint-src` and `make fuzz FUZZ_REQUIRED=1`.
 Dependency installation must succeed, including Homebrew; do not hide failures
 with `|| true`. PRs must pass the applicable CI gates.
 
+CI uses Ubuntu 24.04 with GCC 13 and Clang/clang-tidy 18, and macOS 15 with
+Xcode 16.4. Both jobs use clang-format 18.1.8 from a Python virtual environment.
+The OS package versions installed by `make deps DEPS_DEV=1` may differ. To
+match CI formatting locally, install `clang-format==18.1.8` in a virtual
+environment and pass `CLANG_FORMAT=/path/to/venv/bin/clang-format` to Make.
+On Linux, pass `CC=gcc-13 FUZZ_CC=clang-18 CLANG_TIDY=clang-tidy-18` for the
+corresponding checks. Update the workflow and these versions together.
+
 ## Adding or changing code
 
 Use TDD for behavior changes: test first, then the header and implementation.
