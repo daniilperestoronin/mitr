@@ -1,0 +1,339 @@
+# mitr Configuration File
+# ========================
+#
+# This is the default configuration for mitr terminal emulator.
+# Copy this file to one of these locations to customize:
+#   - $XDG_CONFIG_HOME/mitr/mitr.yml
+#   - ~/.config/mitr/mitr.yml
+#
+# You can also specify a custom config file with: mitr --config /path/to/config.yml
+
+# Window Settings
+# ---------------
+window:
+  width: 800              # Window width in pixels
+  height: 600             # Window height in pixels
+  opacity: 1.0            # Window opacity (0.0 = transparent, 1.0 = opaque)
+  resizable: true         # Allow the window to be resized
+  padding:
+    x: 2                  # Horizontal padding in pixels
+    y: 2                  # Vertical padding in pixels
+
+# Font Settings
+# -------------
+font:
+  family: "JetBrains Mono"  # Family resolved through Fontconfig / CoreText
+  path: ""                  # Explicit font file; empty resolves family
+  fallback_path: ""         # Explicit second face; empty uses system fallback
+  size: 16                  # Font size in points (scaled by HiDPI)
+
+# Cursor Settings
+# ---------------
+cursor:
+  style: block              # Cursor style: block | underline | bar
+  blink: false              # Enable cursor blinking (disabled for performance)
+  blink_interval: 500       # Blink interval in milliseconds
+  color: "#c0c0c0"         # Cursor color
+
+# Colors
+# ------
+# Color format: "#RRGGBB" (hex RGB). Copy a palette from the examples at
+# the bottom of this file over this section to switch schemes.
+# ANSI slots also accept color0..color15. `cursor` here aliases cursor.color.
+colors:
+  # Default colors
+  foreground: "#e5e5e5"    # Default text color
+  background: "#000000"    # Default background color
+  selection: "#6496ff"     # Selection highlight color
+
+  # Normal ANSI colors (0-7)
+  black:   "#000000"
+  red:     "#cd3131"
+  green:   "#0dbc79"
+  yellow:  "#e5e510"
+  blue:    "#2472c8"
+  magenta: "#bc3fbc"
+  cyan:    "#11a8cd"
+  white:   "#e5e5e5"
+
+  # Bright ANSI colors (8-15)
+  bright_black:   "#666666"
+  bright_red:     "#f14c4c"
+  bright_green:   "#23d18b"
+  bright_yellow:  "#f5f543"
+  bright_blue:    "#3b8eea"
+  bright_magenta: "#d670d6"
+  bright_cyan:    "#29b8db"
+  bright_white:   "#ffffff"
+
+# Terminal Settings
+# -----------------
+terminal:
+  shell: ""                 # Shell to run (empty = $SHELL or /bin/sh)
+  term: "xterm-256color"    # TERM environment variable
+  scrollback_lines: 10000   # Number of lines in scrollback buffer
+  bold_is_bright: true      # Bold text uses bright colors (8-15)
+  osc52: off                # OSC 52 clipboard writes: off | confirm | on
+
+# ========================
+# Color scheme examples
+# ========================
+#
+# There is no theme-name switcher. To apply a palette, copy its `colors:`
+# block over the `colors:` section above. Keys match the parser:
+# foreground, background, selection, cursor, black..white, bright_*.
+# `cursor` here is the same as cursor.color in the cursor section.
+# With terminal.bold_is_bright: true, include the bright_* colors.
+
+# Nord
+# colors:
+#   foreground:     "#d8dee9"
+#   background:     "#2e3440"
+#   selection:      "#4c566a"
+#   cursor:         "#d8dee9"
+#   black:          "#3b4252"
+#   red:            "#bf616a"
+#   green:          "#a3be8c"
+#   yellow:         "#ebcb8b"
+#   blue:           "#81a1c1"
+#   magenta:        "#b48ead"
+#   cyan:           "#88c0d0"
+#   white:          "#e5e9f0"
+#   bright_black:   "#4c566a"
+#   bright_red:     "#bf616a"
+#   bright_green:   "#a3be8c"
+#   bright_yellow:  "#ebcb8b"
+#   bright_blue:    "#81a1c1"
+#   bright_magenta: "#b48ead"
+#   bright_cyan:    "#8fbcbb"
+#   bright_white:   "#eceff4"
+
+# Ubuntu (gnome-terminal aubergine + Tango)
+# colors:
+#   foreground:     "#eeeeec"
+#   background:     "#300a24"
+#   selection:      "#4e3a45"
+#   cursor:         "#bbbbbb"
+#   black:          "#2e3436"
+#   red:            "#cc0000"
+#   green:          "#4e9a06"
+#   yellow:         "#c4a000"
+#   blue:           "#3465a4"
+#   magenta:        "#75507b"
+#   cyan:           "#06989a"
+#   white:          "#d3d7cf"
+#   bright_black:   "#555753"
+#   bright_red:     "#ef2929"
+#   bright_green:   "#8ae234"
+#   bright_yellow:  "#fce94f"
+#   bright_blue:    "#729fcf"
+#   bright_magenta: "#ad7fa8"
+#   bright_cyan:    "#34e2e2"
+#   bright_white:   "#eeeeec"
+
+# Dracula
+# colors:
+#   foreground:     "#f8f8f2"
+#   background:     "#282a36"
+#   selection:      "#44475a"
+#   cursor:         "#f8f8f2"
+#   black:          "#21222c"
+#   red:            "#ff5555"
+#   green:          "#50fa7b"
+#   yellow:         "#f1fa8c"
+#   blue:           "#bd93f9"
+#   magenta:        "#ff79c6"
+#   cyan:           "#8be9fd"
+#   white:          "#f8f8f2"
+#   bright_black:   "#6272a4"
+#   bright_red:     "#ff6e6e"
+#   bright_green:   "#69ff94"
+#   bright_yellow:  "#ffffa5"
+#   bright_blue:    "#d6acff"
+#   bright_magenta: "#ff92df"
+#   bright_cyan:    "#a4ffff"
+#   bright_white:   "#ffffff"
+
+# Gruvbox Dark
+# colors:
+#   foreground:     "#ebdbb2"
+#   background:     "#282828"
+#   selection:      "#504945"
+#   cursor:         "#ebdbb2"
+#   black:          "#282828"
+#   red:            "#cc241d"
+#   green:          "#98971a"
+#   yellow:         "#d79921"
+#   blue:           "#458588"
+#   magenta:        "#b16286"
+#   cyan:           "#689d6a"
+#   white:          "#a89984"
+#   bright_black:   "#928374"
+#   bright_red:     "#fb4934"
+#   bright_green:   "#b8bb26"
+#   bright_yellow:  "#fabd2f"
+#   bright_blue:    "#83a598"
+#   bright_magenta: "#d3869b"
+#   bright_cyan:    "#8ec07c"
+#   bright_white:   "#ebdbb2"
+
+# Catppuccin Mocha
+# colors:
+#   foreground:     "#cdd6f4"
+#   background:     "#1e1e2e"
+#   selection:      "#585b70"
+#   cursor:         "#f5e0dc"
+#   black:          "#45475a"
+#   red:            "#f38ba8"
+#   green:          "#a6e3a1"
+#   yellow:         "#f9e2af"
+#   blue:           "#89b4fa"
+#   magenta:        "#f5c2e7"
+#   cyan:           "#94e2d5"
+#   white:          "#bac2de"
+#   bright_black:   "#585b70"
+#   bright_red:     "#f38ba8"
+#   bright_green:   "#a6e3a1"
+#   bright_yellow:  "#f9e2af"
+#   bright_blue:    "#89b4fa"
+#   bright_magenta: "#f5c2e7"
+#   bright_cyan:    "#94e2d5"
+#   bright_white:   "#a6adc8"
+
+# Tokyo Night
+# colors:
+#   foreground:     "#c0caf5"
+#   background:     "#1a1b26"
+#   selection:      "#283457"
+#   cursor:         "#c0caf5"
+#   black:          "#15161e"
+#   red:            "#f7768e"
+#   green:          "#9ece6a"
+#   yellow:         "#e0af68"
+#   blue:           "#7aa2f7"
+#   magenta:        "#bb9af7"
+#   cyan:           "#7dcfff"
+#   white:          "#a9b1d6"
+#   bright_black:   "#414868"
+#   bright_red:     "#ff899d"
+#   bright_green:   "#9fe044"
+#   bright_yellow:  "#faba4a"
+#   bright_blue:    "#8db0ff"
+#   bright_magenta: "#c7a9ff"
+#   bright_cyan:    "#a4daff"
+#   bright_white:   "#c0caf5"
+
+# One Dark
+# colors:
+#   foreground:     "#abb2bf"
+#   background:     "#282c34"
+#   selection:      "#3e4451"
+#   cursor:         "#abb2bf"
+#   black:          "#1e2127"
+#   red:            "#e06c75"
+#   green:          "#98c379"
+#   yellow:         "#d19a66"
+#   blue:           "#61afef"
+#   magenta:        "#c678dd"
+#   cyan:           "#56b6c2"
+#   white:          "#abb2bf"
+#   bright_black:   "#5c6370"
+#   bright_red:     "#e06c75"
+#   bright_green:   "#98c379"
+#   bright_yellow:  "#d19a66"
+#   bright_blue:    "#61afef"
+#   bright_magenta: "#c678dd"
+#   bright_cyan:    "#56b6c2"
+#   bright_white:   "#ffffff"
+
+# Solarized Dark
+# colors:
+#   foreground:     "#839496"
+#   background:     "#002b36"
+#   selection:      "#073642"
+#   cursor:         "#839496"
+#   black:          "#073642"
+#   red:            "#dc322f"
+#   green:          "#859900"
+#   yellow:         "#b58900"
+#   blue:           "#268bd2"
+#   magenta:        "#d33682"
+#   cyan:           "#2aa198"
+#   white:          "#eee8d5"
+#   bright_black:   "#002b36"
+#   bright_red:     "#cb4b16"
+#   bright_green:   "#586e75"
+#   bright_yellow:  "#657b83"
+#   bright_blue:    "#839496"
+#   bright_magenta: "#6c71c4"
+#   bright_cyan:    "#93a1a1"
+#   bright_white:   "#fdf6e3"
+
+# Monokai
+# colors:
+#   foreground:     "#f8f8f2"
+#   background:     "#272822"
+#   selection:      "#49483e"
+#   cursor:         "#f8f8f2"
+#   black:          "#272822"
+#   red:            "#f92672"
+#   green:          "#a6e22e"
+#   yellow:         "#f4bf75"
+#   blue:           "#66d9ef"
+#   magenta:        "#ae81ff"
+#   cyan:           "#a1efe4"
+#   white:          "#f8f8f2"
+#   bright_black:   "#75715e"
+#   bright_red:     "#f92672"
+#   bright_green:   "#a6e22e"
+#   bright_yellow:  "#f4bf75"
+#   bright_blue:    "#66d9ef"
+#   bright_magenta: "#ae81ff"
+#   bright_cyan:    "#a1efe4"
+#   bright_white:   "#f9f8f5"
+
+# Rosé Pine
+# colors:
+#   foreground:     "#e0def4"
+#   background:     "#191724"
+#   selection:      "#403d52"
+#   cursor:         "#524f67"
+#   black:          "#26233a"
+#   red:            "#eb6f92"
+#   green:          "#31748f"
+#   yellow:         "#f6c177"
+#   blue:           "#9ccfd8"
+#   magenta:        "#c4a7e7"
+#   cyan:           "#ebbcba"
+#   white:          "#e0def4"
+#   bright_black:   "#6e6a86"
+#   bright_red:     "#eb6f92"
+#   bright_green:   "#31748f"
+#   bright_yellow:  "#f6c177"
+#   bright_blue:    "#9ccfd8"
+#   bright_magenta: "#c4a7e7"
+#   bright_cyan:    "#ebbcba"
+#   bright_white:   "#e0def4"
+
+# Everforest Dark
+# colors:
+#   foreground:     "#d3c6aa"
+#   background:     "#2d353b"
+#   selection:      "#3d484d"
+#   cursor:         "#d3c6aa"
+#   black:          "#475258"
+#   red:            "#e67e80"
+#   green:          "#a7c080"
+#   yellow:         "#dbbc7f"
+#   blue:           "#7fbbb3"
+#   magenta:        "#d699b6"
+#   cyan:           "#83c092"
+#   white:          "#d3c6aa"
+#   bright_black:   "#7a8478"
+#   bright_red:     "#e67e80"
+#   bright_green:   "#a7c080"
+#   bright_yellow:  "#dbbc7f"
+#   bright_blue:    "#7fbbb3"
+#   bright_magenta: "#d699b6"
+#   bright_cyan:    "#83c092"
+#   bright_white:   "#d3c6aa"

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: make deps DEPS_DEV=1
+
+      - name: Build vendored libraries
+        run: make vendor
+
+      - name: Build (WERROR on src/)
+        run: make clean && make WERROR=1
+
+      - name: Compile commands
+        run: make compile-commands
+
+      - name: Test
+        run: make WERROR=1 test
+
+      - name: Format check
+        run: make fmt-check
+
+      - name: Fuzz (Ubuntu)
+        if: runner.os == 'Linux'
+        run: make fuzz FUZZ_REQUIRED=1
+
+      - name: Lint src (analyzer + bugprone)
+        if: runner.os == 'Linux'
+        run: make lint-src

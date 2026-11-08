@@ -1,0 +1,34 @@
+---
+# clang-tidy configuration for mitr
+# Runs on src/, include/, tests/ — vendor/ is excluded via HeaderFilterRegex
+# and by only passing project .c files to the tool (see Makefile lint target).
+
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  cert-*,
+  misc-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  -bugprone-easily-swappable-parameters,
+  -misc-include-cleaner,
+  -readability-magic-numbers,
+  -readability-identifier-length
+
+# Treat these checks as errors (tighten gradually as the codebase is cleaned up)
+WarningsAsErrors: ''
+
+# Only report diagnostics for project headers, not vendor headers
+HeaderFilterRegex: '^(src|include|tests)/'
+
+# Use the project's .clang-format file for suggested fixes
+FormatStyle: file
+
+CheckOptions:
+  # Cognitive complexity threshold per function (default 25 is reasonable for C)
+  - key:   readability-function-cognitive-complexity.Threshold
+    value: '25'
+  # Allow common short loop/index variable names idiomatic in C
+  - key:   readability-identifier-naming.VariableCase
+    value: lower_case

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=mitr
+GenericName=Terminal
+Comment=Minimal SDL2 terminal emulator
+Exec=@BINDIR@/mitr
+TryExec=@BINDIR@/mitr
+Icon=mitr
+Terminal=false
+Categories=System;TerminalEmulator;Utility;
+Keywords=terminal;shell;emulator;console;
+StartupNotify=true
+StartupWMClass=mitr

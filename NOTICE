@@ -1,0 +1,67 @@
+mitr third-party notices
+=========================
+
+mitr itself is released under the MIT License. See LICENSE.
+
+The components below are stored under vendor/. A build with USE_VENDOR=0
+uses the host copies of SDL2, SDL2_ttf, libyaml, and Fontconfig instead;
+those copies keep the license shipped by the operating system.
+
+FreeType is used under the FreeType License (FTL), not the GNU GPL.
+Portions of this software are copyright © 1996-2024 The FreeType
+Project (www.freetype.org). All rights reserved.
+
+SDL2 2.30.10
+  License: zlib License
+  Text: vendor/SDL2/LICENSE.txt
+  Linked into mitr when USE_VENDOR=1.
+
+SDL2_ttf 2.22.0
+  License: zlib License
+  Text: vendor/SDL2_ttf/LICENSE.txt
+  Linked into mitr when USE_VENDOR=1.
+
+FreeType 2.13.3
+  License: FreeType License (selected). The GNU GPLv2 text is present
+  because upstream LICENSE.TXT names it; mitr does not select the GPL.
+  Text: vendor/freetype/docs/FTL.TXT
+        vendor/freetype/docs/GPLv2.TXT
+        vendor/freetype/LICENSE.TXT
+  Linked into mitr when USE_VENDOR=1.
+  Some files inside this tree use their own licenses (BDF and PCF
+  drivers, the gzip module, HarfBuzz-derived autofit sources, and a
+  public-domain MD5 helper). Those terms are stated in
+  vendor/freetype/LICENSE.TXT.
+  The rest of upstream docs/ was removed. FTL.TXT and GPLv2.TXT are kept.
+
+Fontconfig 2.18.3
+  License: MIT-style (author names may not be used in advertising)
+  Text: vendor/fontconfig/COPYING
+  Linked into mitr on Linux when USE_VENDOR=1. macOS uses CoreText
+  instead.
+
+Expat 2.8.5
+  License: MIT License
+  Text: vendor/expat/COPYING
+  Linked into mitr on Linux when USE_VENDOR=1 (Fontconfig dependency).
+
+zlib 1.3.2
+  License: zlib License
+  Text: vendor/zlib/LICENSE
+  Linked into mitr when USE_VENDOR=1.
+
+libyaml 0.2.5
+  License: MIT License
+  Text: vendor/libyaml/License
+  Linked into mitr when USE_VENDOR=1.
+
+log.c 0.1.0
+  License: MIT License
+  Text: vendor/log.c/LICENSE
+  Compiled into mitr.
+
+gperf 3.3
+  License: GNU General Public License version 3 or later
+  Text: vendor/gperf/COPYING
+  Build tool only. It generates Fontconfig tables and is not linked
+  into the mitr binary.

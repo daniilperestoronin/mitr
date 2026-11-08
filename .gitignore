@@ -1,0 +1,68 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Vendor build artifacts (compiled libraries, not source code)
+build/vendor/
+vendor/*/build_static/
+
+# Compiled executables
+mitr
+test_runner
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+vgcore.*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# clangd / compile database
+compile_commands.json
+
+# Sanitizer outputs
+*.asan
+*.tsan
+*.msan
+*.ubsan
+
+# Core dumps (only at repo root; "core" would also ignore vendor/SDL2/src/core/)
+/core
+/core.*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+.directory
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Profiling
+*.prof
+gmon.out
+perf.data
+perf.data.old
+
+# Valgrind
+*.valgrind
+valgrind*.log
+
