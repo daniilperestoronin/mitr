@@ -342,17 +342,12 @@ build_libyaml() {
     fi
     
     echo -e "${BLUE}Building libyaml...${NC}"
-    cd "$VENDOR_DIR/libyaml"
-    
-    # Note: libyaml release tarball uses autotools, not CMake
-    # Create separate build directory
+    prepare_autotools_source libyaml
+    autoreconf -fi
+
     mkdir -p build_static
     cd build_static
-    
-    # Use system aclocal/automake (avoids "aclocal-1.15: command not found" on Ubuntu)
-    export ACLOCAL="${ACLOCAL:-aclocal}"
-    export AUTOMAKE="${AUTOMAKE:-automake}"
-    
+
     # Configure with autotools (static library)
     ../configure \
         --prefix="$BUILD_DIR" \
