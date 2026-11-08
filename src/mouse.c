@@ -27,10 +27,10 @@ struct MouseManager {
   bool reporting_enabled;
 };
 
-bool mouse_pixel_to_cell(int pixel_x, int pixel_y, int padding_x,
-                         int padding_y, int cell_width, int cell_height,
-                         size_t rows, size_t cols, MouseCellPolicy policy,
-                         size_t *row, size_t *col) {
+bool mouse_pixel_to_cell(int pixel_x, int pixel_y, int padding_x, int padding_y,
+                         int cell_width, int cell_height, size_t rows,
+                         size_t cols, MouseCellPolicy policy, size_t *row,
+                         size_t *col) {
   int64_t px;
   int64_t py;
   size_t c;

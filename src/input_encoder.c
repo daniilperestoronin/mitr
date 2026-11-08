@@ -385,8 +385,7 @@ size_t input_encoder_encode_mouse(const InputEncoderModes *modes,
   return pos;
 }
 
-bool input_encoder_mouse_motion_report(int mouse_report_mode,
-                                       bool cell_changed,
+bool input_encoder_mouse_motion_report(int mouse_report_mode, bool cell_changed,
                                        InputMouseButtons buttons,
                                        int *button_out) {
   int button;
@@ -435,8 +434,7 @@ static int mouse_wheel_accumulate_axis(double *carry, double delta) {
     }
     return 0;
   }
-  if ((*carry > 0.0 && delta < 0.0) ||
-      (*carry < 0.0 && delta > 0.0)) {
+  if ((*carry > 0.0 && delta < 0.0) || (*carry < 0.0 && delta > 0.0)) {
     *carry = 0.0;
   }
   total = *carry + delta;
@@ -456,9 +454,10 @@ static int mouse_wheel_accumulate_axis(double *carry, double delta) {
   return (int)whole;
 }
 
-InputMouseWheelSteps input_encoder_mouse_wheel_accumulate(
-    InputMouseWheelState *state, InputMouseWheelRoute route, double delta_x,
-    double delta_y, bool flipped) {
+InputMouseWheelSteps
+input_encoder_mouse_wheel_accumulate(InputMouseWheelState *state,
+                                     InputMouseWheelRoute route, double delta_x,
+                                     double delta_y, bool flipped) {
   InputMouseWheelSteps steps = {0};
 
   if (!state) {
@@ -505,9 +504,11 @@ int input_encoder_mouse_wheel_button(bool horizontal, int direction) {
   return direction > 0 ? 64 : 65;
 }
 
-InputMouseWheelRoute input_encoder_mouse_wheel_route(
-    bool search_active, bool shift, int mouse_report_mode, bool alt_screen,
-    bool alternate_scroll) {
+InputMouseWheelRoute input_encoder_mouse_wheel_route(bool search_active,
+                                                     bool shift,
+                                                     int mouse_report_mode,
+                                                     bool alt_screen,
+                                                     bool alternate_scroll) {
   if (search_active || shift) {
     return INPUT_MOUSE_WHEEL_LOCAL;
   }
@@ -551,8 +552,9 @@ bool input_encoder_mouse_press_pending(const InputMousePressState *state) {
          state->outstanding[2];
 }
 
-InputMouseButtons input_encoder_mouse_press_filter_buttons(
-    const InputMousePressState *state, InputMouseButtons physical) {
+InputMouseButtons
+input_encoder_mouse_press_filter_buttons(const InputMousePressState *state,
+                                         InputMouseButtons physical) {
   if (!state) {
     return (InputMouseButtons){0};
   }

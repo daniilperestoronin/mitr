@@ -628,9 +628,8 @@ TEST(xterm_ris_exits_alt_screen_and_resets_saved_cursor) {
   TerminalBuffer *tb = terminal_buffer_init(24, 80);
   AnsiParser *parser = ansi_parser_init();
 
-  process_ansi_string(parser,
-                      "main\033[31m\033[?5h\033[6;11H\0337\033[?1049halt\033c",
-                      tb);
+  process_ansi_string(
+      parser, "main\033[31m\033[?5h\033[6;11H\0337\033[?1049halt\033c", tb);
 
   ASSERT_FALSE(terminal_buffer_is_alt_screen(tb));
   ASSERT_EQ(terminal_buffer_get_cell(tb, 0, 0)->codepoint, (uint32_t)' ');

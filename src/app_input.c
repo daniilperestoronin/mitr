@@ -314,8 +314,8 @@ static bool app_mouse_shift_held(void) {
 }
 
 static bool app_mouse_update_cell(AppInputCtx *ctx, size_t row, size_t col) {
-  return ctx && input_encoder_mouse_motion_cell_changed(ctx->mouse_motion, row,
-                                                        col);
+  return ctx &&
+         input_encoder_mouse_motion_cell_changed(ctx->mouse_motion, row, col);
 }
 
 static InputMouseButtons app_mouse_buttons(Uint32 state) {
@@ -441,8 +441,7 @@ static void app_handle_mouse_motion(AppInputCtx *ctx,
     }
     return;
   }
-  buttons =
-      input_encoder_mouse_press_filter_buttons(ctx->mouse_press, buttons);
+  buttons = input_encoder_mouse_press_filter_buttons(ctx->mouse_press, buttons);
   if (input_encoder_mouse_motion_report(modes.mouse_report_mode, cell_changed,
                                         buttons, &button)) {
     app_send_mouse_report(ctx, &modes, INPUT_MOUSE_MOVE, button, row, col);
@@ -565,12 +564,11 @@ static void app_handle_mouse_wheel(AppInputCtx *ctx,
 
   alt_screen = terminal_buffer_is_alt_screen(ctx->term_buffer);
   input_encoder_modes_from_parser(&modes, ctx->ansi_parser);
-  route = input_encoder_mouse_wheel_route(
-      search_active, app_mouse_shift_held(), modes.mouse_report_mode,
-      alt_screen, modes.alternate_scroll);
+  route = input_encoder_mouse_wheel_route(search_active, app_mouse_shift_held(),
+                                          modes.mouse_report_mode, alt_screen,
+                                          modes.alternate_scroll);
   steps = input_encoder_mouse_wheel_accumulate(
-      ctx->mouse_wheel, route,
-      app_wheel_delta(wheel->x, wheel->preciseX),
+      ctx->mouse_wheel, route, app_wheel_delta(wheel->x, wheel->preciseX),
       app_wheel_delta(wheel->y, wheel->preciseY),
       wheel->direction == SDL_MOUSEWHEEL_FLIPPED);
   if (steps.x == 0 && steps.y == 0) {

@@ -9,6 +9,8 @@
 
 #if defined(__linux__)
 #include <fontconfig/fontconfig.h>
+
+/* fcfreetype.h requires the Fontconfig declarations above. */
 #include <fontconfig/fcfreetype.h>
 #endif
 

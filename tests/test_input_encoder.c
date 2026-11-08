@@ -205,9 +205,8 @@ TEST(input_encoder_bracketed_paste) {
 TEST(input_encoder_mouse_sgr) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_sgr = true};
   char buf[32];
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 0,
-                                        (InputKeyMods){0}, 2, 4, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 0, (InputKeyMods){0}, 2, 4, buf, sizeof(buf));
   ASSERT_TRUE(n > 0);
   ASSERT_STR_EQ(buf, "\x1b[<0;5;3M");
 
@@ -219,9 +218,8 @@ TEST(input_encoder_mouse_sgr) {
 TEST(input_encoder_mouse_x10) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_sgr = false};
   char buf[16];
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 0,
-                                        (InputKeyMods){0}, 0, 0, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 0, (InputKeyMods){0}, 0, 0, buf, sizeof(buf));
   ASSERT_EQ(n, 6);
   ASSERT_EQ(buf[0], '\x1b');
   ASSERT_EQ(buf[1], '[');
@@ -243,9 +241,8 @@ TEST(input_encoder_mouse_disabled) {
 TEST(input_encoder_mouse_sgr_wheel_up) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_sgr = true};
   char buf[32];
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 64,
-                                        (InputKeyMods){0}, 2, 4, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 64, (InputKeyMods){0}, 2, 4, buf, sizeof(buf));
   ASSERT_TRUE(n > 0);
   ASSERT_STR_EQ(buf, "\x1b[<64;5;3M");
 }
@@ -253,9 +250,8 @@ TEST(input_encoder_mouse_sgr_wheel_up) {
 TEST(input_encoder_mouse_sgr_wheel_down) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_sgr = true};
   char buf[32];
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 65,
-                                        (InputKeyMods){0}, 2, 4, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 65, (InputKeyMods){0}, 2, 4, buf, sizeof(buf));
   ASSERT_TRUE(n > 0);
   ASSERT_STR_EQ(buf, "\x1b[<65;5;3M");
 }
@@ -263,9 +259,8 @@ TEST(input_encoder_mouse_sgr_wheel_down) {
 TEST(input_encoder_mouse_x10_wheel_up) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_sgr = false};
   char buf[16];
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 64,
-                                        (InputKeyMods){0}, 0, 0, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 64, (InputKeyMods){0}, 0, 0, buf, sizeof(buf));
   ASSERT_EQ(n, 6);
   ASSERT_EQ(buf[0], '\x1b');
   ASSERT_EQ(buf[1], '[');
@@ -299,8 +294,8 @@ TEST(input_encoder_mouse_sgr_modifiers_and_motion_buttons) {
                                  sizeof(buf));
   ASSERT_STR_EQ(buf, "\x1b[<42;5;3M");
 
-  n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_MOVE, 3,
-                                 (InputKeyMods){0}, 2, 4, buf, sizeof(buf));
+  n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_MOVE, 3, (InputKeyMods){0},
+                                 2, 4, buf, sizeof(buf));
   ASSERT_STR_EQ(buf, "\x1b[<35;5;3M");
 }
 
@@ -308,9 +303,9 @@ TEST(input_encoder_mouse_legacy_release_keeps_modifiers) {
   InputEncoderModes modes = {.mouse_report_mode = 1000};
   char buf[16];
 
-  size_t n = input_encoder_encode_mouse(
-      &modes, INPUT_MOUSE_RELEASE, 0, (InputKeyMods){.ctrl = true}, 0, 0, buf,
-      sizeof(buf));
+  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_RELEASE, 0,
+                                        (InputKeyMods){.ctrl = true}, 0, 0, buf,
+                                        sizeof(buf));
 
   ASSERT_EQ(n, 6);
   ASSERT_EQ(buf[3], (char)(32 + 3 + 16));
@@ -320,9 +315,8 @@ TEST(input_encoder_mouse_utf8_coordinates) {
   InputEncoderModes modes = {.mouse_report_mode = 1000, .mouse_utf8 = true};
   char buf[16];
 
-  size_t n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 0,
-                                        (InputKeyMods){0}, 0, 95, buf,
-                                        sizeof(buf));
+  size_t n = input_encoder_encode_mouse(
+      &modes, INPUT_MOUSE_PRESS, 0, (InputKeyMods){0}, 0, 95, buf, sizeof(buf));
   const unsigned char expected[] = {'\x1b', '[', 'M', 32, 0xc2, 0x80, 33};
   ASSERT_EQ(n, sizeof(expected));
   ASSERT_MEM_EQ(buf, expected, sizeof(expected));
@@ -330,7 +324,7 @@ TEST(input_encoder_mouse_utf8_coordinates) {
   n = input_encoder_encode_mouse(&modes, INPUT_MOUSE_PRESS, 0,
                                  (InputKeyMods){0}, 2014, 2014, buf,
                                  sizeof(buf));
-  const unsigned char maximum[] = {'\x1b', '[',  'M', 32,
+  const unsigned char maximum[] = {'\x1b', '[',  'M',  32,
                                    0xdf,   0xbf, 0xdf, 0xbf};
   ASSERT_EQ(n, sizeof(maximum));
   ASSERT_MEM_EQ(buf, maximum, sizeof(maximum));
@@ -348,9 +342,8 @@ TEST(input_encoder_mouse_motion_routing) {
       1000, true, (InputMouseButtons){.left = true}, &button));
   ASSERT_FALSE(input_encoder_mouse_motion_report(
       1002, false, (InputMouseButtons){.left = true}, &button));
-  ASSERT_FALSE(input_encoder_mouse_motion_report(1002, true,
-                                                 (InputMouseButtons){0},
-                                                 &button));
+  ASSERT_FALSE(input_encoder_mouse_motion_report(
+      1002, true, (InputMouseButtons){0}, &button));
 
   ASSERT_TRUE(input_encoder_mouse_motion_report(
       1002, true, (InputMouseButtons){.left = true}, &button));
@@ -362,9 +355,8 @@ TEST(input_encoder_mouse_motion_routing) {
       1002, true, (InputMouseButtons){.right = true}, &button));
   ASSERT_EQ(button, 2);
 
-  ASSERT_TRUE(input_encoder_mouse_motion_report(1003, true,
-                                                (InputMouseButtons){0},
-                                                &button));
+  ASSERT_TRUE(input_encoder_mouse_motion_report(
+      1003, true, (InputMouseButtons){0}, &button));
   ASSERT_EQ(button, 3);
 }
 
@@ -393,23 +385,23 @@ TEST(input_encoder_mouse_wheel_accumulates_precise_axes) {
   InputMouseWheelState state = {0};
   InputMouseWheelSteps steps;
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -0.4, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -0.4, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -0.7, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -0.7, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, -1);
 
   state = (InputMouseWheelState){0};
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.4, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.4, 0.0, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.7, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.7, 0.0, false);
   ASSERT_EQ(steps.x, 1);
   ASSERT_EQ(steps.y, 0);
 }
@@ -422,16 +414,16 @@ TEST(input_encoder_mouse_wheel_flips_both_axes_and_caps_bursts) {
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 3);
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 1e300, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               1e300, 0.0, false);
   ASSERT_EQ(steps.x, 30);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -1e300, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -1e300, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, -30);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, 0.0, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
 }
@@ -439,10 +431,8 @@ TEST(input_encoder_mouse_wheel_flips_both_axes_and_caps_bursts) {
 TEST(input_encoder_mouse_wheel_carry_does_not_cross_routes) {
   InputMouseWheelState state = {0};
   const InputMouseWheelRoute routes[] = {
-      INPUT_MOUSE_WHEEL_LOCAL,
-      INPUT_MOUSE_WHEEL_REPORT,
-      INPUT_MOUSE_WHEEL_ALTERNATE,
-      INPUT_MOUSE_WHEEL_NONE,
+      INPUT_MOUSE_WHEEL_LOCAL,     INPUT_MOUSE_WHEEL_REPORT,
+      INPUT_MOUSE_WHEEL_ALTERNATE, INPUT_MOUSE_WHEEL_NONE,
       INPUT_MOUSE_WHEEL_LOCAL,
   };
 
@@ -458,22 +448,22 @@ TEST(input_encoder_mouse_wheel_suppresses_cross_axis_noise) {
   InputMouseWheelState state = {0};
   InputMouseWheelSteps steps;
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.3, 0.6, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.3, 0.6, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.3, 0.6, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.3, 0.6, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 1);
 
   state = (InputMouseWheelState){0};
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, -0.6, -0.3, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               -0.6, -0.3, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, -0.6, -0.3, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               -0.6, -0.3, false);
   ASSERT_EQ(steps.x, -1);
   ASSERT_EQ(steps.y, 0);
 }
@@ -482,12 +472,12 @@ TEST(input_encoder_mouse_wheel_equal_axes_prefer_vertical) {
   InputMouseWheelState state = {0};
   InputMouseWheelSteps steps;
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.6, -0.6, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.6, -0.6, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.6, -0.6, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.6, -0.6, false);
   ASSERT_EQ(steps.x, 0);
   ASSERT_EQ(steps.y, -1);
 }
@@ -496,25 +486,25 @@ TEST(input_encoder_mouse_wheel_dominant_axis_clears_suppressed_carry) {
   InputMouseWheelState state = {0};
   InputMouseWheelSteps steps;
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.8, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.8, 0.0, false);
   ASSERT_EQ(steps.x, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.3, 0.6, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.3, 0.6, false);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.3, 0.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.3, 0.0, false);
   ASSERT_EQ(steps.x, 0);
 
   state = (InputMouseWheelState){0};
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -0.8, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -0.8, false);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, -0.6, -0.3, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               -0.6, -0.3, false);
   ASSERT_EQ(steps.x, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -0.3, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -0.3, false);
   ASSERT_EQ(steps.y, 0);
 }
 
@@ -522,11 +512,11 @@ TEST(input_encoder_mouse_wheel_direction_change_drops_old_carry) {
   InputMouseWheelState state = {0};
   InputMouseWheelSteps steps;
 
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, 0.9, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, 0.9, false);
   ASSERT_EQ(steps.y, 0);
-  steps = input_encoder_mouse_wheel_accumulate(
-      &state, INPUT_MOUSE_WHEEL_REPORT, 0.0, -1.0, false);
+  steps = input_encoder_mouse_wheel_accumulate(&state, INPUT_MOUSE_WHEEL_REPORT,
+                                               0.0, -1.0, false);
   ASSERT_EQ(steps.y, -1);
 }
 
@@ -573,8 +563,7 @@ TEST(input_encoder_mouse_press_state_restores_protocol_snapshot) {
   InputEncoderModes release_modes = {0};
 
   input_encoder_mouse_press_record(&state, 2, &press_modes, true);
-  ASSERT_TRUE(
-      input_encoder_mouse_press_take(&state, 2, &release_modes));
+  ASSERT_TRUE(input_encoder_mouse_press_take(&state, 2, &release_modes));
   ASSERT_EQ(release_modes.mouse_report_mode, 1003);
   ASSERT_TRUE(release_modes.mouse_utf8);
   ASSERT_FALSE(release_modes.mouse_sgr);
@@ -623,8 +612,7 @@ TEST(input_encoder_mouse_press_filter_keeps_only_outstanding_buttons) {
   ASSERT_FALSE(filtered.left);
   ASSERT_FALSE(filtered.middle);
   ASSERT_TRUE(filtered.right);
-  ASSERT_TRUE(
-      input_encoder_mouse_motion_report(1002, true, filtered, &button));
+  ASSERT_TRUE(input_encoder_mouse_motion_report(1002, true, filtered, &button));
   ASSERT_EQ(button, 2);
 }
 
@@ -653,8 +641,7 @@ TEST(input_encoder_mouse_press_filter_composes_with_motion_modes) {
 
   ASSERT_FALSE(
       input_encoder_mouse_motion_report(1002, true, filtered, &button));
-  ASSERT_TRUE(
-      input_encoder_mouse_motion_report(1003, true, filtered, &button));
+  ASSERT_TRUE(input_encoder_mouse_motion_report(1003, true, filtered, &button));
   ASSERT_EQ(button, 3);
 }
 
@@ -856,8 +843,7 @@ void run_input_encoder_tests(void) {
   RUN_TEST(input_encoder_mouse_press_state_tracks_buttons_and_contexts);
   RUN_TEST(input_encoder_mouse_press_filter_rejects_undelivered_buttons);
   RUN_TEST(input_encoder_mouse_press_filter_keeps_only_outstanding_buttons);
-  RUN_TEST(
-      input_encoder_mouse_press_filter_rejects_button_taken_on_focus_loss);
+  RUN_TEST(input_encoder_mouse_press_filter_rejects_button_taken_on_focus_loss);
   RUN_TEST(input_encoder_mouse_press_filter_composes_with_motion_modes);
   RUN_TEST(input_encoder_local_mouse_reporting_off);
   RUN_TEST(input_encoder_local_mouse_reporting_without_shift);
@@ -866,8 +852,7 @@ void run_input_encoder_tests(void) {
   RUN_TEST(input_encoder_mouse_up_to_pty_accepts_delivered_press);
   RUN_TEST(input_encoder_mouse_up_to_pty_local_without_press);
   RUN_TEST(input_encoder_mouse_up_to_pty_rejects_failed_press);
-  RUN_TEST(
-      input_encoder_mouse_up_to_pty_rejects_press_consumed_on_focus_loss);
+  RUN_TEST(input_encoder_mouse_up_to_pty_rejects_press_consumed_on_focus_loss);
   RUN_TEST(input_encoder_modes_from_parser);
   RUN_TEST(input_encoder_modes_from_parser_defaults);
   RUN_TEST(input_encoder_deccolm_invokes_resize_callback);

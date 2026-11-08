@@ -12,23 +12,23 @@ TEST(test_mouse_pixel_to_cell_strict_accepts_only_grid) {
   size_t row = 99;
   size_t col = 99;
 
-  ASSERT_TRUE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 3,
-                                  MOUSE_CELL_STRICT, &row, &col));
+  ASSERT_TRUE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                  &row, &col));
   ASSERT_EQ(row, 0);
   ASSERT_EQ(col, 0);
-  ASSERT_TRUE(mouse_pixel_to_cell(34, 46, 5, 7, 10, 20, 2, 3,
-                                  MOUSE_CELL_STRICT, &row, &col));
+  ASSERT_TRUE(mouse_pixel_to_cell(34, 46, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                  &row, &col));
   ASSERT_EQ(row, 1);
   ASSERT_EQ(col, 2);
 
-  ASSERT_FALSE(mouse_pixel_to_cell(4, 7, 5, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 6, 5, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(35, 7, 5, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 47, 5, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(4, 7, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 6, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(35, 7, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 47, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
 }
 
 TEST(test_mouse_pixel_to_cell_clamps_active_gestures) {
@@ -49,18 +49,18 @@ TEST(test_mouse_pixel_to_cell_rejects_invalid_geometry) {
   size_t row = 99;
   size_t col = 99;
 
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 0, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, -1, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 0, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 0,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, -1, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, &row, &col));
-  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 3,
-                                   MOUSE_CELL_STRICT, nullptr, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 0, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, -1, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 0, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 0, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, -1, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   &row, &col));
+  ASSERT_FALSE(mouse_pixel_to_cell(5, 7, 5, 7, 10, 20, 2, 3, MOUSE_CELL_STRICT,
+                                   nullptr, &col));
 }
 
 TEST(test_mouse_manager_init) {
