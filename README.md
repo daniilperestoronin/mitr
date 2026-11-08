@@ -23,9 +23,10 @@ make release
 ```
 
 `make deps` supports Debian/Ubuntu, Fedora, Arch Linux, and macOS with
-Homebrew. It installs CMake and autotools for the vendor build, plus Python 3
-and X11 development libraries on Linux. Use `make check-deps` to check an
-existing setup, or `make deps DEPS_DRY_RUN=1` to preview package commands.
+Homebrew. It installs CMake and autotools for the vendor build, plus Python 3,
+gettext/Autopoint, and X11 development libraries on Linux. Use
+`make check-deps` to check an existing setup, or `make deps DEPS_DRY_RUN=1`
+to preview package commands.
 
 To use system libraries instead:
 

@@ -51,7 +51,7 @@ install_apt() {
     if [[ "$USE_VENDOR" == "0" ]]; then
         packages+=(libsdl2-dev libsdl2-ttf-dev libyaml-dev libfontconfig1-dev)
     else
-        packages+=(python3)
+        packages+=(python3 gettext autopoint)
     fi
     if [[ "$DEPS_DEV" == "1" ]]; then
         packages+=(clang clang-format clang-tidy)
@@ -70,7 +70,7 @@ install_dnf() {
     if [[ "$USE_VENDOR" == "0" ]]; then
         packages+=(SDL2-devel SDL2_ttf-devel libyaml-devel fontconfig-devel)
     else
-        packages+=(gcc-c++ python3)
+        packages+=(gcc-c++ python3 gettext gettext-devel)
     fi
     if [[ "$DEPS_DEV" == "1" ]]; then
         packages+=(clang clang-tools-extra)
@@ -87,7 +87,7 @@ install_pacman() {
     if [[ "$USE_VENDOR" == "0" ]]; then
         packages+=(sdl2 sdl2_ttf libyaml fontconfig)
     else
-        packages+=(python)
+        packages+=(python gettext)
     fi
     if [[ "$DEPS_DEV" == "1" ]]; then
         packages+=(clang)

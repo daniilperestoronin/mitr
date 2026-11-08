@@ -31,6 +31,13 @@ Run `make vendor` from the repository root. Static libraries go into
 into mitr. libc and platform libraries remain system libraries.
 `make vendor-clean` removes the dependency build.
 
+On Linux, gperf and Fontconfig are bootstrapped with the installed Autotools
+in disposable source copies under `build/vendor/src/`. This avoids requiring
+the Automake version used by an upstream release and leaves vendored sources
+unchanged. Fontconfig bootstrap also needs gettext and autopoint, installed
+by `make deps`. Only the gperf library and executable are built; its generated
+documentation is not needed by mitr.
+
 ## Update a dependency
 
 Dependency upgrades require approval under [AGENTS.md](../AGENTS.md).

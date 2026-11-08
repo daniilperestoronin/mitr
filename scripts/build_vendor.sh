@@ -6,7 +6,7 @@
 #   ./scripts/build_vendor.sh --clean   # Clean and rebuild all
 #   ./scripts/build_vendor.sh --only sdl2   # Build only a specific library
 
-set -e  # Exit on error
+set -eo pipefail  # Exit on errors, including source-copy pipelines
 
 # Colors for output
 RED='\033[0;31m'
@@ -76,6 +76,17 @@ is_built() {
 is_tool_built() {
     local tool=$1
     [ -x "$BUILD_DIR/bin/${tool}" ]
+}
+
+# Bootstrap copies so generated Autotools files never change vendored sources.
+prepare_autotools_source() {
+    local library=$1
+    local source_dir="$BUILD_DIR/src/$library"
+    rm -rf "$source_dir"
+    mkdir -p "$source_dir"
+    tar -C "$VENDOR_DIR/$library" --exclude=build_static -cf - . |
+        tar -C "$source_dir" -xf -
+    cd "$source_dir"
 }
 
 # Build zlib first; FreeType and Fontconfig link against it.
@@ -153,13 +164,15 @@ build_gperf() {
     fi
 
     echo -e "${BLUE}Building gperf...${NC}"
-    cd "$VENDOR_DIR/gperf"
+    prepare_autotools_source gperf
+    (cd lib && autoreconf -fi)
     mkdir -p build_static
     cd build_static
 
     ../configure --prefix="$BUILD_DIR" --disable-dependency-tracking
-    make -j"$NCPU"
-    make install
+    make -C lib -j"$NCPU"
+    make -C src -j"$NCPU"
+    make -C src install
 
     echo -e "${GREEN}✓ gperf built successfully${NC}"
     echo ""
@@ -227,7 +240,9 @@ build_fontconfig() {
     fi
 
     echo -e "${BLUE}Building Fontconfig...${NC}"
-    cd "$VENDOR_DIR/fontconfig"
+    prepare_autotools_source fontconfig
+    PATH="$BUILD_DIR/bin:$PATH" AUTORECONF_FLAGS="-fi" \
+        bash autogen.sh --noconfigure
     mkdir -p build_static
     cd build_static
 
