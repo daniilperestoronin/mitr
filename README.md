@@ -4,7 +4,7 @@
   <img src="assets/icons/mitr.svg" alt="mitr logo" width="160">
 </p>
 
-A small terminal emulator for Linux and macOS, written in C23 with SDL2.
+A minimalist terminal emulator for Linux and macOS, written in C23 with SDL2.
 It supports common VT and xterm sequences, scrollback search, mouse selection,
 true color, and HiDPI fonts. Settings live in a YAML file.
 
