@@ -37,6 +37,9 @@ jobs:
         run: |
           export DEVELOPER_DIR=/Applications/Xcode_16.4.app/Contents/Developer
           xcodebuild -version
+          SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+          test -d "$SDKROOT"
+          echo "SDKROOT=$SDKROOT" >> "$GITHUB_ENV"
           echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
           echo "CC=$(xcrun --find clang)" >> "$GITHUB_ENV"
           echo "CXX=$(xcrun --find clang++)" >> "$GITHUB_ENV"
