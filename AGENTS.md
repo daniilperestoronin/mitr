@@ -86,6 +86,11 @@ environment and pass `CLANG_FORMAT=/path/to/venv/bin/clang-format` to Make.
 On Linux, pass `CC=gcc-13 FUZZ_CC=clang-18 CLANG_TIDY=clang-tidy-18` for the
 corresponding checks. Update the workflow and these versions together.
 
+Linux font tests require monochrome symbol and CJK fallback fonts. Ubuntu CI
+installs `fontconfig`, `fonts-dejavu-core`, `fonts-noto-core`, and
+`fonts-noto-cjk` explicitly; install these packages for the same local test
+coverage. macOS tests use the system fonts from the selected runner image.
+
 ## Adding or changing code
 
 Use TDD for behavior changes: test first, then the header and implementation.
