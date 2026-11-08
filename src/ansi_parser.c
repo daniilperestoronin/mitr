@@ -16,7 +16,7 @@
 
 #define MAX_PARAMS 16
 #define OSC_BUF_CAP 65536
-#define OSC_DECODE_CAP (48 * 1024)
+#define OSC_DECODE_CAP ((size_t)48 * 1024)
 
 /* ========================================================================
  * Internal Structure
@@ -140,7 +140,7 @@ static const uint32_t dec_special_graphics[] = {
  * Returns the Unicode codepoint for the given byte.
  */
 static uint32_t map_charset(AnsiParser *parser, unsigned char ch) {
-  char active = parser->gl_is_g1 ? parser->charset_g1 : parser->charset_g0;
+  int active = parser->gl_is_g1 ? parser->charset_g1 : parser->charset_g0;
   if (active == '0' && ch >= 0x60 && ch <= 0x7E) {
     return dec_special_graphics[ch - 0x60];
   }
@@ -286,7 +286,7 @@ static uint32_t xterm_256_to_rgb(const AnsiParser *parser, uint8_t color) {
 
   /* Colors 232-255: Grayscale ramp */
   if (color >= 232) {
-    uint8_t gray = 8 + (color - 232) * 10;
+    uint8_t gray = (uint8_t)(8 + (color - 232) * 10);
     return RGB(gray, gray, gray);
   }
 
