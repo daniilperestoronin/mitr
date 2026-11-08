@@ -4,6 +4,11 @@
  * Following TDD approach - tests define expected behavior
  */
 
+/* Expose mkdtemp on macOS when the test build enables POSIX declarations. */
+#if defined(__APPLE__) && !defined(_DARWIN_C_SOURCE)
+#define _DARWIN_C_SOURCE
+#endif
+
 #include "config.h"
 #include "test_framework.h"
 #include <stdio.h>
@@ -11,6 +16,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 /* ========================================================================
  * Default Configuration Tests
