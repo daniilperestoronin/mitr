@@ -5,7 +5,10 @@
  * Uses POSIX PTY APIs: posix_openpt, grantpt, unlockpt, etc.
  */
 
-#define _XOPEN_SOURCE 700 /* posix_openpt, grantpt, unlockpt, ptsname_r */
+#if defined(__linux__) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE /* ptsname_r (Linux glibc) */
+#endif
+#define _XOPEN_SOURCE 700 /* posix_openpt, grantpt, unlockpt */
 #define _DEFAULT_SOURCE   /* ECHOCTL, ECHOKE, dprintf (Linux glibc) */
 #ifdef __APPLE__
 #define _DARWIN_C_SOURCE /* BSD termios flags + dprintf (macOS) */
