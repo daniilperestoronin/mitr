@@ -66,6 +66,14 @@ jobs:
       - name: Build vendored libraries
         run: make vendor
 
+      - name: Show libyaml configure log
+        if: failure()
+        run: |
+          log=build/vendor/src/libyaml/build_static/config.log
+          if [ -f "$log" ]; then
+            cat "$log"
+          fi
+
       - name: Build (WERROR on src/)
         run: make clean && make WERROR=1
 
