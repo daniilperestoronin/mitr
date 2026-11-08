@@ -90,6 +90,9 @@ Linux font tests require monochrome symbol and CJK fallback fonts. Ubuntu CI
 installs `fontconfig`, `fonts-dejavu-core`, `fonts-noto-core`, and
 `fonts-noto-cjk` explicitly; install these packages for the same local test
 coverage. macOS tests use the system fonts from the selected runner image.
+SDL renderer/font tests require the dummy video driver and software renderer;
+setup failures fail the test instead of silently passing. The Menlo/Apple
+Symbols test is registered only on macOS.
 
 ## Adding or changing code
 

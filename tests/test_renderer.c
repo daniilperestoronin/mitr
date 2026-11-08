@@ -21,7 +21,7 @@ static bool sdl_video_ready(void) {
 
 TEST(renderer_smoke_init_destroy) {
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -29,7 +29,7 @@ TEST(renderer_smoke_init_destroy) {
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -37,7 +37,7 @@ TEST(renderer_smoke_init_destroy) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -46,7 +46,7 @@ TEST(renderer_smoke_init_destroy) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);
@@ -144,7 +144,7 @@ TEST(renderer_smoke_init_destroy) {
 
 TEST(renderer_put_render_clears_dirty) {
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -152,7 +152,7 @@ TEST(renderer_put_render_clears_dirty) {
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -160,7 +160,7 @@ TEST(renderer_put_render_clears_dirty) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -169,7 +169,7 @@ TEST(renderer_put_render_clears_dirty) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);
@@ -212,7 +212,7 @@ TEST(renderer_render_consumes_scroll_shift) {
   int delta = 0;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -220,7 +220,7 @@ TEST(renderer_render_consumes_scroll_shift) {
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -228,7 +228,7 @@ TEST(renderer_render_consumes_scroll_shift) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -237,7 +237,7 @@ TEST(renderer_render_consumes_scroll_shift) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);
@@ -316,7 +316,7 @@ TEST(renderer_repaints_clean_rows_every_frame) {
   TermCell *cell;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -324,7 +324,7 @@ TEST(renderer_repaints_clean_rows_every_frame) {
                        SDL_WINDOWPOS_UNDEFINED, 160, 80, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -332,7 +332,7 @@ TEST(renderer_repaints_clean_rows_every_frame) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -341,7 +341,7 @@ TEST(renderer_repaints_clean_rows_every_frame) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);
@@ -402,7 +402,7 @@ TEST(renderer_sgr_reverse_swaps_painted_colors) {
   TermCell *plain;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -410,7 +410,7 @@ TEST(renderer_sgr_reverse_swaps_painted_colors) {
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -418,7 +418,7 @@ TEST(renderer_sgr_reverse_swaps_painted_colors) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -427,7 +427,7 @@ TEST(renderer_sgr_reverse_swaps_painted_colors) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);
@@ -530,7 +530,7 @@ TEST(renderer_bottom_remainder_uses_terminal_background) {
   uint8_t blue = 0;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -538,7 +538,7 @@ TEST(renderer_bottom_remainder_uses_terminal_background) {
                        SDL_WINDOWPOS_UNDEFINED, 160, 80, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -546,7 +546,7 @@ TEST(renderer_bottom_remainder_uses_terminal_background) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -555,7 +555,7 @@ TEST(renderer_bottom_remainder_uses_terminal_background) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   Renderer *renderer = renderer_init(window, sdl_renderer, font_manager);

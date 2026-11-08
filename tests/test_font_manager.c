@@ -67,7 +67,7 @@ static bool font_file_readable(const char *path) {
 
 TEST(font_manager_smoke_init_destroy) {
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   SDL_Window *window =
@@ -75,7 +75,7 @@ TEST(font_manager_smoke_init_destroy) {
                        SDL_WINDOWPOS_UNDEFINED, 320, 240, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   SDL_Renderer *sdl_renderer =
@@ -83,7 +83,7 @@ TEST(font_manager_smoke_init_destroy) {
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   FontManager *font_manager =
@@ -92,7 +92,7 @@ TEST(font_manager_smoke_init_destroy) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   int width = 0;
@@ -141,7 +141,7 @@ TEST(font_manager_missing_fallback_does_not_crash) {
   SDL_Texture *atlas;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   window =
@@ -149,14 +149,14 @@ TEST(font_manager_missing_fallback_does_not_crash) {
                        SDL_WINDOWPOS_UNDEFINED, 320, 240, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   font_manager = font_manager_init(
@@ -165,7 +165,7 @@ TEST(font_manager_missing_fallback_does_not_crash) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   atlas = font_manager_get_glyph(font_manager, 'A', COLOR_WHITE, COLOR_BLACK, 0,
@@ -197,7 +197,7 @@ TEST(font_manager_fallback_rasterizes_missing_glyph) {
   SDL_Texture *atlas;
 
   if (!sdl_video_ready()) {
-    return;
+    TEST_FAIL("SDL dummy video initialization failed");
   }
 
   window =
@@ -205,21 +205,21 @@ TEST(font_manager_fallback_rasterizes_missing_glyph) {
                        SDL_WINDOWPOS_UNDEFINED, 320, 240, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
 
   sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   if (TTF_Init() < 0) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL_ttf initialization failed");
   }
 
   for (int i = 0; TEST_FONTS[i] != nullptr && probe == 0; i++) {
@@ -258,11 +258,14 @@ TEST(font_manager_fallback_rasterizes_missing_glyph) {
   }
 
   if (probe == 0 || !primary || !fallback) {
+    TTF_Quit();
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("No usable primary/fallback font pair; install test fonts");
   }
+
+  TTF_Quit();
 
   font_manager =
       font_manager_init(nullptr, primary, fallback, 16, sdl_renderer);
@@ -270,7 +273,7 @@ TEST(font_manager_fallback_rasterizes_missing_glyph) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   atlas = font_manager_get_glyph(font_manager, probe, COLOR_WHITE, COLOR_BLACK,
@@ -409,8 +412,12 @@ TEST(font_manager_watch_uses_system_fallback) {
   int box_ink;
   int drawn;
 
-  if (!sdl_video_ready() || TTF_Init() < 0) {
-    return;
+  if (!sdl_video_ready()) {
+    TEST_FAIL("SDL dummy video initialization failed");
+  }
+  if (TTF_Init() < 0) {
+    SDL_Quit();
+    TEST_FAIL("SDL_ttf initialization failed");
   }
   for (size_t i = 0; TEST_FONTS[i] != nullptr; i++) {
     TTF_Font *font;
@@ -428,23 +435,25 @@ TEST(font_manager_watch_uses_system_fallback) {
     }
   }
   if (!primary_path) {
+    TTF_Quit();
     SDL_Quit();
-    return;
+    TEST_FAIL("No primary font without U+231A; install test fonts");
   }
   box_ink = font_center_opaque(primary_path, size, watch);
+  TTF_Quit();
 
   window =
       SDL_CreateWindow("mitr-test", SDL_WINDOWPOS_UNDEFINED,
                        SDL_WINDOWPOS_UNDEFINED, 320, 240, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
   sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
   font_manager =
       font_manager_init("monospace", primary_path, nullptr, size, sdl_renderer);
@@ -452,7 +461,7 @@ TEST(font_manager_watch_uses_system_fallback) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   atlas = font_manager_get_glyph(font_manager, watch, COLOR_WHITE, COLOR_BLACK,
@@ -468,6 +477,7 @@ TEST(font_manager_watch_uses_system_fallback) {
   SDL_Quit();
 }
 
+#if defined(__APPLE__)
 TEST(font_manager_watch_uses_symbol_face) {
   static const char menlo_path[] = "/System/Library/Fonts/Menlo.ttc";
   static const char symbols_path[] = "/System/Library/Fonts/Apple Symbols.ttf";
@@ -486,13 +496,15 @@ TEST(font_manager_watch_uses_symbol_face) {
   int watch_ink;
   int drawn;
 
-  if (!sdl_video_ready() || !font_file_readable(menlo_path) ||
-      !font_file_readable(symbols_path)) {
-    return;
+  if (!font_file_readable(menlo_path) || !font_file_readable(symbols_path)) {
+    TEST_FAIL("The macOS symbol test requires Menlo and Apple Symbols");
+  }
+  if (!sdl_video_ready()) {
+    TEST_FAIL("SDL dummy video initialization failed");
   }
   if (TTF_Init() < 0) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL_ttf initialization failed");
   }
   menlo = TTF_OpenFont(menlo_path, size);
   symbols = TTF_OpenFont(symbols_path, size);
@@ -504,27 +516,29 @@ TEST(font_manager_watch_uses_symbol_face) {
     if (symbols) {
       TTF_CloseFont(symbols);
     }
+    TTF_Quit();
     SDL_Quit();
-    return;
+    TEST_FAIL("Unexpected Menlo/Apple Symbols coverage for U+231A");
   }
   TTF_CloseFont(menlo);
   TTF_CloseFont(symbols);
 
   box_ink = font_center_opaque(menlo_path, size, watch);
   watch_ink = font_center_opaque(symbols_path, size, watch);
+  TTF_Quit();
 
   window =
       SDL_CreateWindow("mitr-test", SDL_WINDOWPOS_UNDEFINED,
                        SDL_WINDOWPOS_UNDEFINED, 320, 240, SDL_WINDOW_HIDDEN);
   if (!window) {
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL window creation failed");
   }
   sdl_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   if (!sdl_renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("SDL software renderer creation failed");
   }
 
   /* Fallback is Menlo too, so it cannot supply U+231A. */
@@ -534,7 +548,7 @@ TEST(font_manager_watch_uses_symbol_face) {
     SDL_DestroyRenderer(sdl_renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return;
+    TEST_FAIL("Font manager initialization failed; check installed test fonts");
   }
 
   atlas = font_manager_get_glyph(font_manager, watch, COLOR_WHITE, COLOR_BLACK,
@@ -550,6 +564,7 @@ TEST(font_manager_watch_uses_symbol_face) {
   SDL_DestroyWindow(window);
   SDL_Quit();
 }
+#endif
 
 void run_font_manager_tests(void) {
   printf("\n" TERM_COLOR_YELLOW
@@ -558,5 +573,7 @@ void run_font_manager_tests(void) {
   RUN_TEST(font_manager_missing_fallback_does_not_crash);
   RUN_TEST(font_manager_fallback_rasterizes_missing_glyph);
   RUN_TEST(font_manager_watch_uses_system_fallback);
+#if defined(__APPLE__)
   RUN_TEST(font_manager_watch_uses_symbol_face);
+#endif
 }
