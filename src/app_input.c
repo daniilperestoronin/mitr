@@ -73,6 +73,18 @@ InputKeyMods app_mods_from_sdl(SDL_Keymod mod) {
   return mods;
 }
 
+SDL_Keycode app_key_from_sdl(const SDL_Keysym *key) {
+  if (!key) {
+    return SDLK_UNKNOWN;
+  }
+  if ((key->mod & (KMOD_CTRL | KMOD_GUI)) != 0 && (key->mod & KMOD_MODE) == 0 &&
+      key->sym >= 0x80 && key->sym < SDLK_SCANCODE_MASK &&
+      key->scancode >= SDL_SCANCODE_A && key->scancode <= SDL_SCANCODE_Z) {
+    return SDLK_a + (SDL_Keycode)(key->scancode - SDL_SCANCODE_A);
+  }
+  return key->sym;
+}
+
 static void app_send_key(AppInputCtx *ctx, InputKey key, InputKeyMods mods) {
   InputEncoderModes modes;
   char buf[16];
@@ -650,7 +662,8 @@ void app_input_handle_events(AppInputCtx *ctx) {
       break;
 
     case SDL_KEYDOWN:
-      app_handle_keydown(ctx, event.key.keysym.sym, event.key.keysym.mod);
+      app_handle_keydown(ctx, app_key_from_sdl(&event.key.keysym),
+                         event.key.keysym.mod);
       break;
 
     case SDL_TEXTINPUT:

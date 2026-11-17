@@ -162,6 +162,7 @@ TEST_SRCS = $(TEST_DIR)/test_runner.c \
             $(TEST_DIR)/test_config.c \
             $(TEST_DIR)/test_input_encoder.c \
             $(TEST_DIR)/test_app_search.c \
+            $(TEST_DIR)/test_app_input.c \
             $(TEST_DIR)/test_vt100.c \
             $(TEST_DIR)/test_vt102.c \
             $(TEST_DIR)/test_vt220.c \
@@ -182,6 +183,7 @@ TEST_LIB_SRCS = $(SRC_DIR)/terminal_buffer.c \
                 $(SRC_DIR)/input_encoder.c \
                 $(SRC_DIR)/app_search.c \
                 $(SRC_DIR)/renderer.c \
+                $(SRC_DIR)/app_input.c \
                 $(SRC_DIR)/font_manager.c \
                 $(SRC_DIR)/font_resolver.c \
                 $(VENDOR_DIR)/log.c/src/log.c

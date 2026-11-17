@@ -42,6 +42,8 @@ typedef struct {
 
 InputKeyMods app_mods_from_sdl(SDL_Keymod mod);
 
+SDL_Keycode app_key_from_sdl(const SDL_Keysym *key);
+
 bool app_input_pty_write(PtyManager *pty, const char *data, size_t len);
 
 void app_input_handle_events(AppInputCtx *ctx);

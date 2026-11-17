@@ -16,6 +16,7 @@ void run_mouse_tests(void);
 void run_config_tests(void);
 void run_input_encoder_tests(void);
 void run_app_search_tests(void);
+void run_app_input_tests(void);
 void run_vt100_tests(void);
 void run_vt102_tests(void);
 void run_vt220_tests(void);
@@ -153,6 +154,7 @@ static void run_unit_and_integration_tests(void) {
   run_config_tests();
   run_input_encoder_tests();
   run_app_search_tests();
+  run_app_input_tests();
   run_vt100_tests();
   run_vt102_tests();
   run_vt220_tests();
