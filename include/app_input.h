@@ -40,7 +40,7 @@ typedef struct {
   InputMouseWheelState *mouse_wheel;
 } AppInputCtx;
 
-InputKeyMods app_mods_from_sdl(SDL_Keymod mod);
+InputKeyMods app_mods_from_sdl(Uint16 mod);
 
 SDL_Keycode app_key_from_sdl(const SDL_Keysym *key);
 

@@ -126,9 +126,11 @@ enabled alternate scroll.
 
 ## Input and selection
 
-`app_mods_from_sdl` maps Shift, left/right Alt, and Ctrl to `InputKeyMods`;
-Mode and GUI are excluded. `input_encoder_encode_key_ex` encodes modifiers,
-and `input_encoder_encode_key` supplies the unmodified form. Alt+letter
+SDL keyboard modifier masks stay `Uint16`, matching `SDL_Keysym.mod`,
+through the input handlers. `app_mods_from_sdl` maps Shift, left/right Alt,
+and Ctrl to `InputKeyMods`; Mode and GUI are excluded.
+`input_encoder_encode_key_ex` encodes modifiers, and `input_encoder_encode_key`
+supplies the unmodified form. Alt+letter
 uses `input_encoder_encode_alt_char`; the following SDL text event is
 suppressed to avoid sending the character twice.
 

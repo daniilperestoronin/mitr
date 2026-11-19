@@ -65,7 +65,7 @@ static void app_paste_text(AppInputCtx *ctx, const char *text) {
   }
 }
 
-InputKeyMods app_mods_from_sdl(SDL_Keymod mod) {
+InputKeyMods app_mods_from_sdl(Uint16 mod) {
   InputKeyMods mods = {0};
   mods.shift = (mod & KMOD_SHIFT) != 0;
   mods.alt = (mod & (KMOD_LALT | KMOD_RALT)) != 0;
@@ -105,7 +105,7 @@ static void app_send_function_key(AppInputCtx *ctx, SDL_Keycode key,
   app_send_key(ctx, (InputKey)(INPUT_KEY_F1 + (key - SDLK_F1)), mods);
 }
 
-static bool app_is_search_chord(SDL_Keycode key, SDL_Keymod mod) {
+static bool app_is_search_chord(SDL_Keycode key, Uint16 mod) {
   if (key != SDLK_f || (mod & KMOD_SHIFT) == 0) {
     return false;
   }
@@ -113,7 +113,7 @@ static bool app_is_search_chord(SDL_Keycode key, SDL_Keymod mod) {
 }
 
 static bool app_handle_search_key(AppInputCtx *ctx, SDL_Keycode key,
-                                  SDL_Keymod mod) {
+                                  Uint16 mod) {
   if (!ctx || !ctx->search) {
     return true;
   }
@@ -220,7 +220,7 @@ static void app_paste_clipboard(AppInputCtx *ctx, const char *log_label) {
 }
 
 static void app_handle_keydown(AppInputCtx *ctx, SDL_Keycode key,
-                               SDL_Keymod mod) {
+                               Uint16 mod) {
   InputKeyMods mods = app_mods_from_sdl(mod);
   bool search_active = ctx->search && ctx->search->active;
 
